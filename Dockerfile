@@ -1,8 +1,8 @@
 FROM golang:latest
 RUN mkdir /build
-RUN cp -rf * /build/
-WORKDIR /build/bccavl/
-RUN go mod tidy
-RUN go build .
+WORKDIR /build/
+RUN cd /build && git clone https://github.com/gyanpatel/avlapp.git
+RUN cd /build/avlapp && go mod tidy
+RUN cd /build/avlapp && go build .
 EXPOSE 8085
-ENTRYPOINT [ "/build/bccavl" ]
+ENTRYPOINT [ "/build/avlapp/bccavl" ]
