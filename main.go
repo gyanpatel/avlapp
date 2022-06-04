@@ -17,10 +17,10 @@ var dbCon *sql.DB
 var templates embed.FS
 
 func init() {
-	_, err := os.Stat("data/sqllite_file.db")
+	_, err := os.Stat("sqllite_file.db")
 
 	if err == os.ErrNotExist {
-		file, err := os.Create("data/sqllite_file.db")
+		file, err := os.Create("sqllite_file.db")
 		defer file.Close()
 
 		if err != nil {
@@ -28,7 +28,7 @@ func init() {
 		}
 	}
 
-	db, err := sql.Open("sqlite3", "data/sqllite_file.db")
+	db, err := sql.Open("sqlite3", "./sqllite_file.db")
 	dbCon = db
 	tx, err := dbCon.Begin()
 	if err != nil {
