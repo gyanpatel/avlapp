@@ -1,0 +1,134 @@
+{{ define "_menu.html" }}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Availability - Bracknell Cricket Club</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.ico" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin - v2.2.2
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="home" class="logo d-flex align-items-center">
+        <img src="assets/img/favicon.ico" alt="">
+        <span class="d-none d-lg-block">Bracknell Cricket Club</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      
+      <li class="nav-item">
+        <a class="nav-link " data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>Availability Admin</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="forms-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+          {{ if eq .Role "A"}}
+          <li>
+            <a href="viewplayers" class="active">
+              <i class="bi bi-circle"></i><span>View Club Players</span>
+            </a>
+          </li>
+          <li>
+            <a href="managesch" class="active">
+              <i class="bi bi-circle"></i><span>Manage Fixure</span>
+            </a>
+          </li>
+          {{ end }}
+          <li>
+            <a href="home" class="active">
+              <i class="bi bi-circle"></i><span>Mark Availability</span>
+            </a>
+          </li>
+          <li>
+            <a href="manage" class="active">
+              <i class="bi bi-circle"></i><span>Manage Players</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Forms Nav -->
+    </ul>
+      <ul class="sidebar-nav" id="sidebar-nav1">
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>View Availability Details</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="forms-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav1">
+          <li>
+            <a href="view?date=nextweek" class="active">
+              <i class="bi bi-circle"></i><span>Current Week</span>
+            </a>
+          </li>
+          <li>
+            <a href="view" class="active">
+              <i class="bi bi-circle"></i><span>Future Weeks</span>
+            </a>
+          </li>
+          <li>
+            <a href="viewsch?date=nextweek" class="active">
+              <i class="bi bi-circle"></i><span>Current Week Fixure</span>
+            </a>
+          </li>
+          <li>
+            <a href="viewsch" class="active">
+              <i class="bi bi-circle"></i><span>Future Weeks Fixture</span>
+            </a>
+          </li>
+          <li>
+            <a href="viewteam" class="active">
+              <i class="bi bi-circle"></i><span>Playing XI</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      </ul><!-- End Tables Nav -->
+</aside>
+      {{ end }}

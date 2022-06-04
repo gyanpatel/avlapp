@@ -1,0 +1,74 @@
+{{ template "_menu.html" .}}
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>Player Availability</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="home">Bracknell</a></li>
+        <li class="breadcrumb-item">Cricket</li>
+        <li class="breadcrumb-item active">Club</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Playing XI</h5>
+
+              <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">Team</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">XI</th>
+                    <th scope="col">Captain</th>
+                    <th scope="col">VC</th>
+
+
+                  </tr>
+                </thead>
+                <tbody>
+                  {{ range $rec := .MatchSchList  }}
+                  <tr>
+                    <td>{{ $rec.Team }}</td>
+                    <td>{{ $rec.Date }}</td>
+                    <td class="parent">
+                      <table>
+                        {{ range $r,$sel := $rec.TeamSel }}
+                        {{ if eq $sel "" }}
+                        {{ else }}
+                        <tr>
+                          <td class="child" >{{ $r }}.{{ $sel }} </td>
+                      </tr>
+                      {{ end }}
+                      {{ end }}
+                      <tr>
+                        <td class="child">10. {{ $rec.TeamC }}(C)</td>
+                        </tr>
+                        <tr>
+                          <td class="child">11. {{ $rec.TeamVC }} (VC)</td>
+                        </tr>
+                    </table>
+                   </td>
+                    <td>{{ $rec.TeamC }}</td>
+                    <td>{{ $rec.TeamVC }}</td>
+                  </tr>
+                  {{ end }}
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+{{ template "_footer.html" .}}

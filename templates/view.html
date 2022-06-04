@@ -1,0 +1,173 @@
+{{ template "_menu.html" .}}
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>Player Availability</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="home">Bracknell</a></li>
+        <li class="breadcrumb-item">Cricket</li>
+        <li class="breadcrumb-item active">Club</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+  <div class="card">
+    <div class="card-body">
+      <div id="failurealertupdate" name="failurealertupdate" style="display: none;"
+        class="form-group col-sm-4 alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>FAILURE!</strong> Update failed, please check the details and select 9 players. Captain and VC will be included as per fixture
+        <button type="button" class="close" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="successalertupdate" name="successalertupdate" style="display: none;"
+        class="form-group col-sm-4 alert alert-success alert-dismissible fade show" role="alert">
+        <strong>SUCCESS!</strong> Team updated successfully.
+        <button type="button" class="close" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">List of entries</h5>
+                {{ if eq .Role "A"}}
+                <div class="row mb-3">
+                  <div class="col-sm-10">
+                    <form id="mu" name="mu" autocomplete="off">
+                      <div class="form-floating mb-3">
+                        <div class="col-sm-10">
+                          <select class="form-select" id="team" name="team" aria-label="select example" required>
+                            <option value="" disabled selected>Select Team</option>
+                            <option value="1s"> 1s</option>
+                            <option value="2s"> 2s</option>
+                            <option value="Sunday Team">Sunday Team</option>
+                            <option value="Midweek Team">Midweek Team</option>
+
+                          </select>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col-sm-10">
+                          <input type="date" class="form-control date" id="teamdate" name="teamdate"
+                            placeholder="Choose date" required>
+                        </div>
+                      </div>
+                      <button type="submit" name="save" id="save" class="btn btn-primary">Save</button>
+                  </div>
+                </div>
+                {{ end }}
+                <!-- Table with stripped rows -->
+                <table class="table datatable" id="selplayer">
+                  <thead>
+                    {{ if eq .Role "A"}}
+                    <tr>
+                      <th scope="col">Select</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Day</th>
+                      <th scope="col">Available?</th>
+                      <th scope="col">Contact</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Comments</th>
+                    </tr>
+                    {{ else }}
+                    <th scope="col">Name</th>
+                    <th scope="col">Day</th>
+                    <th scope="col">Available?</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Comments</th>
+               
+                    {{ end }}
+                  </thead>
+                  <tbody>
+                    {{ if eq .Role "A"}}
+                    {{ range $rec := .PlayerAvailList }}
+                    <tr>
+                      <td> <input class="form-check-input" type="checkbox" name="sel" id="sel" value="{{ $rec.Name}}">
+                      </td>
+                      {{ if eq $rec.AvlYn "Yes"}}
+                      <td class="table-success">{{ $rec.Name}} </td>
+                      {{ else }}
+                      <td class="table-danger">{{ $rec.Name}} </td>
+                      {{ end }}
+                      <td>{{ $rec.Day }}</td>
+                      <td>{{ $rec.AvlYn }}</td>
+                      <td><a href="https://api.whatsapp.com/send?phone={{ $rec.Contact}}"><i
+                            class="bi bi-whatsapp"></i></a> </td>
+                      <td>{{$rec.Date}}</td>
+                      <td>{{ $rec.Comment}}</td>
+                    </tr>
+                    {{ end }}
+                    {{ else }}
+                    {{ range $rec := .PlayerAvailList }}
+                    <tr>
+                      {{ if eq $rec.AvlYn "Yes"}}
+                      <td class="table-success">{{ $rec.Name}} </td>
+                      {{ else }}
+                      <td class="table-danger">{{ $rec.Name}} </td>
+                      {{ end }}
+                      <td>{{ $rec.Day }}</td>
+                      <td>{{ $rec.AvlYn }}</td>
+                      <td>{{$rec.Date}}</td>
+                      <td>{{ $rec.Comment}}</td>
+                    </tr>
+                    {{ end }}
+                    {{ end }}
+                  </tbody>
+                </table>
+                <!-- End Table with stripped rows -->
+                </form>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+</main><!-- End #main -->
+<script>
+  $("#mu").on("submit", function (e) {
+    e.preventDefault();
+    var team = $('select#team').val();
+    // var check11 = $('#11check').prop("checked");
+    var selected = new Array();
+    $("#selplayer input[type=checkbox]:checked").each(function () {
+      $('input[name="locationthemes"]:checked').each(function () {
+      });
+      selected.push(this.value);
+    });
+
+    if (selected.length != 9) {
+      $('#failurealertupdate').show();
+      return
+    }
+
+    check11 = JSON.stringify(selected);
+    //alert(check11);
+    var teamdate = $('input#teamdate').val();
+    $.post("save11", {
+      "team": team,
+      "teamdate": teamdate,
+      "check11": check11,
+
+    }, function (userupd, status) {
+      const rowsupd = JSON.parse(userupd);
+      var rowsupdct = 0;
+      $.each(rowsupd, function (index, element) {
+        rowsupdct = rowsupdct + element;
+      });
+      if (status === "success" && rowsupdct > 0) {
+        $('#successalertupdate').show();
+      } else if (rowsupdct === 0) {
+        $('#failurealertupdate').show();
+      }
+    });
+  });
+  $('.alert .close').click(function () {
+    $(this).parent().hide();
+  });
+</script>
+{{ template "_footer.html" .}}

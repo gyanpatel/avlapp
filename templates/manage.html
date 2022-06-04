@@ -1,0 +1,141 @@
+{{ template "_menu.html" . }}
+
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>Player Availability</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="home">Bracknell</a></li>
+        <li class="breadcrumb-item">Cricket</li>
+        <li class="breadcrumb-item active">Club</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+  <form id="mu" name="mu" autocomplete="off">
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-6">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Add Players</h5>
+              <div id="failurealertremove" name="failurealertremove" style="display: none;"
+                class="form-group col-sm-4 alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>FAILURE!</strong> Player not found, please check the details and try again.
+                <button type="button" class="close" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div id="successalertremove" name="successalertremove" style="display: none;"
+                class="form-group col-sm-5 alert alert-success alert-dismissible fade show" role="alert">
+                <strong>SUCCESS!</strong> Player removed successfully.
+                <button type="button" class="close" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div id="failurealertupdate" name="failurealertupdate" style="display: none;"
+                class="form-group col-sm-4 alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>FAILURE!</strong> Player update failed, please check the details.
+                <button type="button" class="close" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div id="successalertupdate" name="successalertupdate" style="display: none;"
+                class="form-group col-sm-4 alert alert-success alert-dismissible fade show" role="alert">
+                <strong>SUCCESS!</strong> Player updated successfully.
+                <button type="button" class="close" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <!-- General Form Elements -->
+              <div class="form-floating mb-3">
+                <div class="col-sm-10">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="playername" placeholder="name" required>
+                    <label for="playername">Name</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-floating mb-3">
+                <div class="col-sm-10">
+                  <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="playercontact" placeholder="contact" value="44" required>
+                    <label for="playercontact">Contact</label>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-10">
+                  <button type="submit" id="addplayer" class="btn btn-primary">Add/Update</button>
+                  <button type="submit" id="removeplayer" class="btn btn-danger">Remove</button>
+
+                </div>
+              </div>
+
+  </form><!-- End General Form Elements -->
+
+  </div>
+  </div>
+
+  </div>
+
+
+  </section>
+
+</main><!-- End #main -->
+<script>
+  $('.date').datepicker({
+    multidate: true,
+    format: 'dd-mm-yyyy'
+  });
+  $("#mu").on("submit", function (e) {
+    e.preventDefault();
+    $("button#addplayer").click(function (){
+     // e.preventDefault();
+      var playername = $('input#playername').val();
+      var playercontact = $('input#playercontact').val();
+      $.post("addplayer", {
+        "playername": playername,
+        "playercontact": playercontact,
+
+      }, function (userupd, status) {
+        const rowsupd = JSON.parse(userupd);
+        var rowsupdct = 0;
+        $.each(rowsupd, function (index, element) {
+          rowsupdct = rowsupdct + element;
+        });
+        if (status === "success" && rowsupdct > 0) {
+          $('#successalertupdate').show();
+        } else if (rowsupdct === 0) {
+          $('#failurealertupdate').show();
+        }
+      });
+    });
+  });
+  $("#mu").on("submit", function (e) {
+    e.preventDefault();
+    $("button#removeplayer").click(function (e) {
+      e.preventDefault();
+      var playername = $('input#playername').val();
+      $.post("removeplayer", {
+        playername: playername
+      }, function (userupd, status) {
+        const rowsdel = JSON.parse(userupd);
+        var rowsdelct = 0;
+        $.each(rowsdel, function (index, element) {
+          rowsdelct = rowsdelct + element;
+        });
+        if (status === "success" && rowsdelct > 0) {
+          $('#successalertremove').show();
+        } else if (rowsdelct === 0) {
+          $('#failurealertremove').show();
+        }
+      });
+    });
+  });
+  $('.alert .close').click(function () {
+    $(this).parent().hide();
+  });
+</script>
+{{ template "_footer.html"}}
