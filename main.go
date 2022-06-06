@@ -17,11 +17,11 @@ var dbCon *sql.DB
 var templates embed.FS
 
 func init() {
-	dbfilePath := os.Getenv("filepath")
-	_, err := os.Stat(dbfilePath + "sqllite_file.db")
+	dbfilePath := "/build/avlapp/data/sqllite_file.db"
+	_, err := os.Stat(dbfilePath)
 
 	if err == os.ErrNotExist {
-		file, err := os.Create(dbfilePath + "sqllite_file.db")
+		file, err := os.Create(dbfilePath)
 		defer file.Close()
 
 		if err != nil {
@@ -29,7 +29,7 @@ func init() {
 		}
 	}
 
-	db, err := sql.Open("sqlite3", dbfilePath+"sqllite_file.db")
+	db, err := sql.Open("sqlite3", dbfilePath)
 	dbCon = db
 	tx, err := dbCon.Begin()
 	if err != nil {
